@@ -4,11 +4,11 @@
 
 ## Table of Contents
 
-*   [Solution Overview](#solution-overview)
+*   [Solution Overview](##solution-overview)
 *   [Directory Layout](#directory-layout)
 *   [How to Run](#how-to-run)
     *   [Requirements](#requirements)
-    *   [Preprocessing](#preprocessing)
+    *   [Preparation](#preparation)
     *   [Training](#training)
     *   [Inference](#inference)
 *   [License](#license)
@@ -111,7 +111,7 @@ $ python nn_train.py -s settings_final_model.yml -o ../output/00_SERX50sSE_128x2
 - `-o` : specifies a directory to output training results(trained weights, log, copy of settings file, and so on).
     - The specified directory is newly created (if the same name directory exists, this program will quit).
 
-### Infernce 
+### Inference
 
 #### inference by single model.
 
@@ -133,7 +133,7 @@ $ python nn_inference.py -t ../output/00_SERX50sSE_128x224_3x35epoch_all_data -o
 
 
 
-### inference by snapshot ensemble
+#### inference by snapshot ensemble
 
 In `./src` directory, run this.
 

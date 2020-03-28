@@ -12,7 +12,7 @@ model_name: SERX50sSETripleHead  # This is just a name, not used for model init 
 backborn_class: ImageFeatureExtractor
 backborn_kwargs:
       backborn_model: SEResNeXt50Conv1MeanTo1ch
-      pretrained_model_path: "../input/chainercv-seresnext/se_resnext50_imagenet_converted_2018_06_28.npz"
+      pretrained_model_path: ../input/chainercv-seresnext/se_resnext50_imagenet_converted_2018_06_28.npz
       extract_layers: [res5]
 
 # # # global pooling
@@ -33,7 +33,7 @@ batch_size: 64
 max_epoch: 105
 use_early_stopping: false
 es_check_trigger: [1, epoch]
-patience: 500  # This is used when and only when `use_early_stopping` os `True`.
+patience: 500  # This is used when and only when `use_early_stopping` is `True`.
 log_trigger: [1, epoch]
 eval_trigger: [35, epoch]
 
