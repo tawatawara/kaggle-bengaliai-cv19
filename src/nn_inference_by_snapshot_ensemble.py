@@ -22,15 +22,14 @@ import config
 def argparse():
     """Parse Comndline Args."""
     usage_msg = """
-\n  python {0} --trained_path <str> --output_path <str> --epoch_of_model <int> --gpu_device <int> --batch_size <int> [-va]\n
+\n  python {0} --trained_path <str> --output_path <str> --gpu_device <int> --batch_size <int>\n
 """.format(__file__,)
-    parser = ArgumentParser(prog="nn_train.py", usage=usage_msg)
+    parser = ArgumentParser(prog="nn_inference_by_snapshot_ensemble.py", usage=usage_msg)
 
     parser.add_argument("-t", "--trained_path", dest="trained_path", required=True)
     parser.add_argument("-o", "--output_path", dest="output_path", default="")
     parser.add_argument("-g", "--gpu_device", dest="gpu_device", default=-1, type=int)
     parser.add_argument("-bs", "--batch_size", dest="batch_size", default=64, type=int)
-    parser.add_argument('-va', "--valid", dest="valid", action='store_true')
     argvs = parser.parse_args()
     return argvs
 

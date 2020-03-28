@@ -25,7 +25,7 @@ def argparse():
     usage_msg = """
 \n  python {0} --trained_path <str> --output_path <str> --epoch_of_model <int> --gpu_device <int> --batch_size <int> [-va]\n
 """.format(__file__,)
-    parser = ArgumentParser(prog="nn_train.py", usage=usage_msg)
+    parser = ArgumentParser(prog="nn_inference.py", usage=usage_msg)
 
     parser.add_argument("-t", "--trained_path", dest="trained_path", required=True)
     parser.add_argument("-o", "--output_path", dest="output_path", default="")

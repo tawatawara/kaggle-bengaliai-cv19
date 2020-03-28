@@ -18,7 +18,7 @@ def argparse():
 \n  python {0} [-tr] [-te]\n
 """.format(__file__,)
     parser = ArgumentParser(
-        prog="nn_train.py", usage=usage_msg)
+        prog="preprocess.py", usage=usage_msg)
 
     parser.add_argument('-tr', "--train", dest="train", action='store_true')
     parser.add_argument('-te', "--test", dest="test", action='store_true')
