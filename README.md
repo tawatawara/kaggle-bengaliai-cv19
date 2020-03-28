@@ -123,12 +123,13 @@ $ python nn_inference.py -t ../output/00_SERX50sSE_128x224_3x35epoch_all_data -o
 
 - `-t` : specifies a directory to output training results which includes trained weights for inference.
 - `-o` : specifies a directory to output inference outputs
-    - logits for each class : numpy.ndarray saved as `.npz` file
+    - logits for each class (`shape: (n_test, n_class)`): numpy.ndarray saved as `.npy` file
     - prediction for each example by submission format: pandas.Dataframe saved as `.csv` file
     - The specified directory is newly created (if the same name directory exists, this program will quit).
 - `-e` : specifies the epoch of model weights for inference
     - if corresponding file does not exist, use the model of last epoch
 - `-g` : specifies a gpu device for inference.
+- `-bs`: specifies batch size for inference loop
 
 
 
@@ -137,16 +138,17 @@ $ python nn_inference.py -t ../output/00_SERX50sSE_128x224_3x35epoch_all_data -o
 In `./src` directory, run this.
 
 ~~~
-$ python nn_inference_by_snapshot_ensemble.py -t ../output/00_SERX50sSE_128x224_3x35epoch_all_data -o ../output/00_infer_by_snapshot_ensemble -bs 128 -g 0
+$ python nn_inference_by_snapshot_ensemble.py -t ../output/00_SERX50sSE_128x224_3x35epoch_all_data -o ../output/00_infer_by_snapshot_ensemble -g 0 -bs 128 
 ~~~
 
 - `-t` : specifies a directory to output training results which includes trained weights for inference.
 - `-o` : specifies a directory to output inference outputs
-    - logits for each class : numpy.ndarray saved as `.npz` file
+    - Logits for each class of all model(`shape: (n_model, n_test, n_class)`): numpy.ndarray saved as `.npy` file
+    - Probs for each class(`shape: (n_test, n_class)`): numpy.ndarray saved as `.npy` file
     - prediction for each example by submission format: pandas.Dataframe saved as `.csv` file
     - The specified directory is newly created (if the same name directory exists, this program will quit).
-    - if corresponding file does not exist, use the model of last epoch
 - `-g` : specifies a gpu device for inference.
+- `-bs`: specifies batch size for inference loop
 
 
 ## License
