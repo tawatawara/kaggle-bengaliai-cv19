@@ -1,0 +1,90 @@
+# # basic settings.
+seed: 39
+n_folds: 4
+val_fold: -1  # `-1` means train by all train data.
+gpu_devices: [0]
+n_processes: 4
+
+# # args for image classification model
+model_name: SERX50sSETripleHead  # This is just a name, not used for model init nor load.
+
+# # # backborn
+backborn_class: ImageFeatureExtractor
+backborn_kwargs:
+      backborn_model: SEResNeXt50Conv1MeanTo1ch
+      pretrained_model_path: "../input/chainercv-seresnext/se_resnext50_imagenet_converted_2018_06_28.npz"
+      extract_layers: [res5]
+
+# # # global pooling
+pooling_class: TripleHeadPoolingLayer
+pooling_kwargs:
+      pooling_layer: sSEAvgPool
+      pooling_kwargs: {}
+
+# # # classification head
+head_class: TripleInOutClassificationLayer
+head_kwargs:
+      n_classes: [168, 11, 7]
+      classification_layer: LADL
+
+# # args for training.
+# # # general
+batch_size: 64
+max_epoch: 105
+use_early_stopping: false
+es_check_trigger: [1, epoch]
+patience: 500  # This is used when and only when `use_early_stopping` os `True`.
+log_trigger: [1, epoch]
+eval_trigger: [35, epoch]
+
+optimizer: NesterovAG
+learning_rate: 1.5e-02
+learning_rate_min: 0.0
+
+learning_schedule: cosine
+epoch_per_cycle: 35
+warm_up: null
+warm_up_epoch: 0
+
+momentum: 0.9
+weight_decay_rate: 1.0e-04
+
+training_wrapper: CustomTripleHeadClassifier
+loss_function: [
+      WeightedLoss,
+      {n_classes: [168, 11, 7], weights: [2, 1, 1], loss_func: softmax_cross_entropy, loss_kwargs: {},}
+]
+eval_functions:
+      - [SelectedSoftmaxCrossEntropy, {n_classes: [168, 11, 7], component_id: 0}]
+      - [SelectedSoftmaxCrossEntropy, {n_classes: [168, 11, 7], component_id: 1}]
+      - [SelectedSoftmaxCrossEntropy, {n_classes: [168, 11, 7], component_id: 2}]
+
+# # # for image
+# # # # Note: `CustomTranspose` just changes position of channel. This is because I use chainer datasets class and albumentations.
+# # # # Albumentations requires [H, W, C] format images while chainer datasets class output [C, H, W] format image arrays.
+training_transforms:
+      # # # # change format from [C, H, W] to [H, W, C]
+      - [CustomTranspose, {always_apply: True, axis: [1, 2, 0]}]
+
+      - [PadIfNeeded, {always_apply: True, min_height: 140, min_width: 245, border_mode: 0, value: 253}]
+      - [Rotate, {p: 0.8, limit: 5, border_mode: 1}]
+      - [Resize, {always_apply: True, height: 128, width: 224}]
+      - [RandomScale, {p: 1.0, scale_limit: 0.1}]
+      - [PadIfNeeded, {always_apply: True, min_height: 146, min_width: 256, border_mode: 0, value: 253}]
+      - [RandomCrop, {p: 1.0, height: 128, width: 224}]
+      - [RandomErasing, {p: 0.5, s: [0.02, 0.4]}]
+      - [Normalize, {always_apply: True, mean: [0.946967259411315,], std: [0.06580952928802959,]}]
+
+     # # # # change format from [H, W, C] to [C, H, W]
+      - [CustomTranspose, {always_apply: True, axis: [2, 0, 1]}]
+
+inference_transforms:
+      # # # # change format from [C, H, W] to [H, W, C]
+      - [CustomTranspose, {always_apply: True, axis: [1, 2, 0]}]
+
+      - [PadIfNeeded, {always_apply: True, min_height: 140, min_width: 245, border_mode: 0, value: 253}]
+      - [Resize, {always_apply: True, height: 128, width: 224}]
+      - [Normalize, {always_apply: True, mean: [0.946967259411315,], std: [0.06580952928802959,]}]
+
+      # # # # change format from [H, W, C] to [C, H, W]
+      - [CustomTranspose, {always_apply: True, axis: [2, 0, 1]}]
