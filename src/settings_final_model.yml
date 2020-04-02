@@ -8,10 +8,10 @@ n_processes: 4
 # # args for image classification model
 model_name: SERX50sSETripleHead  # This is just a name, not used for model init nor load.
 
-# # # backborn
-backborn_class: ImageFeatureExtractor
-backborn_kwargs:
-      backborn_model: SEResNeXt50Conv1MeanTo1ch
+# # # backbone
+backbone_class: ImageFeatureExtractor
+backbone_kwargs:
+      backbone_model: SEResNeXt50Conv1MeanTo1ch
       pretrained_model_path: ../input/chainercv-seresnext/se_resnext50_imagenet_converted_2018_06_28.npz
       extract_layers: [res5]
 

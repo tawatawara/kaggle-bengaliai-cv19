@@ -37,22 +37,22 @@ class ImageFeatureExtractor(chainer.Chain):
     """image feture extractor based on pretrained model."""
 
     def __init__(
-        self, backborn_model: str,
+        self, backbone_model: str,
         pretrained_model_path: Optional[str]="usual", extract_layers: List[str]=["res5"]
     ) -> None:
         """Initialze."""
         super(ImageFeatureExtractor, self).__init__()
 
-        if hasattr(links, backborn_model):
-            backborn_model_class = getattr(links, backborn_model)
+        if hasattr(links, backbone_model):
+            backbone_model_class = getattr(links, backbone_model)
         else:
-            backborn_model_class = eval(backborn_model)
+            backbone_model_class = eval(backbone_model)
 
         if pretrained_model_path is not None and pretrained_model_path == "usual":
-            pretrained_model_path = USUAL_PRETRAINED_PATH_DICT[backborn_model]
+            pretrained_model_path = USUAL_PRETRAINED_PATH_DICT[backbone_model]
 
         with self.init_scope():
-            self.extractor = backborn_model_class(pretrained_model=pretrained_model_path)
+            self.extractor = backbone_model_class(pretrained_model=pretrained_model_path)
         self.extractor._pick = extract_layers
         self.extractor.remove_unused()
         # print(self._children)

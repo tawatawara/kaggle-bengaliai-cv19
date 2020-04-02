@@ -13,7 +13,7 @@ import pandas as pd
 from chainer import serializers, datasets, functions
 
 from competition_utils import utils
-from nn_for_image_data import backborn_chains, global_pooling_chains, classifer_chains
+from nn_for_image_data import backbone_chains, global_pooling_chains, classifer_chains
 from training_utils import nn_training
 
 import config
@@ -37,7 +37,7 @@ def argparse():
 def init_model(settings):
     model = nn_training.ImageClassificationModel(
         extractor=getattr(
-            backborn_chains, settings["backborn_class"])(**settings["backborn_kwargs"]),
+            backbone_chains, settings["backbone_class"])(**settings["backbone_kwargs"]),
         global_pooling=None if settings["pooling_class"] is None else getattr(
             global_pooling_chains, settings["pooling_class"])(**settings["pooling_kwargs"]),
         classifier=getattr(
