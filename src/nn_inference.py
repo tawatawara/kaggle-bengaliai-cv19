@@ -14,7 +14,7 @@ from sklearn.metrics import recall_score
 from chainer import serializers, datasets
 
 from competition_utils import utils
-from nn_for_image_data import backbone_chains, global_pooling_chains, classifer_chains
+from nn_for_image_data import backbone_chains, global_pooling_chains, classifier_chains
 from training_utils import nn_training
 
 import config
@@ -87,7 +87,7 @@ def inference(
             global_pooling=None if settings["pooling_class"] is None else getattr(
                 global_pooling_chains, settings["pooling_class"])(**settings["pooling_kwargs"]),
             classifier=getattr(
-                classifer_chains, settings["head_class"])(**settings["head_kwargs"])
+                classifier_chains, settings["head_class"])(**settings["head_kwargs"])
         )
         # # load model.
         model_path = trained_path / "model_snapshot_{}.npz".format(epoch_of_model)
